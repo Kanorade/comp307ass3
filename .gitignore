@@ -19,7 +19,7 @@ bin/
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/dist/
+/dist/comp307
 /nbdist/
 /.nb-gradle/
 
@@ -28,3 +28,4 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/.idea/artifacts/
