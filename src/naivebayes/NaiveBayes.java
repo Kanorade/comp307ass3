@@ -51,7 +51,7 @@ public class NaiveBayes {
         featureValueMap.put("node-caps", List.of("yes", "no"));
         featureValueMap.put("deg-malig", List.of("1", "2", "3"));
         featureValueMap.put("breast", List.of("left", "right"));
-        featureValueMap.put("breast-quad", List.of("left up", "left low", "right up", "right low", "central"));
+        featureValueMap.put("breast-quad", List.of("left_up", "left_low", "right_up", "right_low", "central"));
         featureValueMap.put("irradiat", List.of("yes", "no"));
 
         classLabels = new String[] {"no-recurrence-events", "recurrence-events"};
@@ -66,24 +66,37 @@ public class NaiveBayes {
 
         // Initialise counts
         for (String classLabel : classLabels) {
-            String classification = classLabel;
-            classLabelCount.put(classification, 1);
+            classLabelCount.put(classLabel, 1);
 
             for (Map.Entry<String, List<String>> featureEntry : featureValueMap.entrySet()) {
                 String feature = featureEntry.getKey();
                 for (String value : featureEntry.getValue()) {
-                    CountKeys countKeys = new CountKeys(feature, value, classification);
+                    CountKeys countKeys = new CountKeys(feature, value, classLabel);
                     featureCount.put(countKeys, 1);
                 }
             }
         }
 
-        System.out.println(featureCount);
-        System.out.println(featureCount.size());
+        System.out.println("Initialise counts...");
+        System.out.println("Count size: " + featureCount.size());
+
+
         // Count the numbers of each classification and the feature values related to it
         for (List<String> instance : trainingSet) {
+            String classification = instance.get(CLASS_INDEX);
+            int newClassCount = classLabelCount.get(classification) + 1;
+            classLabelCount.put(classification, newClassCount);
 
+            for (int i = 1; i < instance.size(); i++) { // Skip i=0 as that was the class
+                String feature = labels[i];
+                String value = instance.get(i);
+                CountKeys keys = new CountKeys(feature, value, classification);
+                int newCount = featureCount.get(keys) + 1;
+                featureCount.put(keys, newCount);
+            }
         }
+
+
 
     }
 
