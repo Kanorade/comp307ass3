@@ -80,6 +80,45 @@ public class NaiveBayes {
                 System.out.println();   // newline
             }
         }
+
+        makePredictions(testSet, classLabels, featureLabels, prob);
+    }
+
+    private void makePredictions(List<List<String>> testSet, String[] classLabels, String[] featureLabels, Probabilities prob) {
+        System.out.println("\n\nUsing test instances to make predictions...\n");
+        int successCount = 0;   // To keep track of successful predictions
+
+        int instanceCount = 0;
+        for (List<String> instance : testSet) {
+            instanceCount++;
+            System.out.println("instance " + instanceCount + ": ");
+            String bestPrediction = "";
+            double bestScore = 0;
+            for (String classification : classLabels) {
+                double score = prob.classProb.get(classification);
+                for (int i = 1; i < featureLabels.length; i++) {    // Skip i=0 as that was the class
+                    String feature = featureLabels[i];
+                    String value = instance.get(i);
+                    CountKeys probKey = new CountKeys(feature, value, classification);
+                    score *= prob.valueProb.get(probKey);
+                }
+                System.out.println(" - score(Y = " + classification + ") = " + score);
+                // Is score the best score?
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestPrediction = classification;
+                }
+            }
+            System.out.println(" - prediction: " + bestPrediction);
+
+            if (bestPrediction.equals(instance.get(CLASS_INDEX))) {
+                successCount++;
+            }
+        }
+
+        // Not part of the report, but for my own curiosity
+        double accuracy = (double) successCount / testSet.size();
+        System.out.println("\nAccuracy: " + (accuracy*100) + "%");
     }
 
     private Probabilities train(List<List<String>> trainingSet, String[] featureLabels, String[] classLabels,
