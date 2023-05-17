@@ -7,12 +7,13 @@ import java.io.IOException;
 import java.util.*;
 
 public class NaiveBayes {
-    String[] labels;
+    String[] featureLabels;
     String[] classLabels;
     List<List<String>> trainingSet;
     List<List<String>> testSet;
     final static int CLASS_INDEX = 0;
     Map<String, List<String>> featureValueMap;
+    record Probabilities(HashMap<String, Double> classProb, HashMap<CountKeys, Double> valueProb){}
     public NaiveBayes(String[] args) {
         // process arguments
         if (args.length != 2) {
@@ -21,7 +22,7 @@ public class NaiveBayes {
         }
         try {
             System.out.println("Loading files...");
-            labels = readFirstLine(args[0]);
+            featureLabels = readFirstLine(args[0]);
             trainingSet = readFileIgnoringFirstLine(args[0]);
             testSet = readFileIgnoringFirstLine(args[1]);
             System.out.println("Done!");
@@ -56,17 +57,40 @@ public class NaiveBayes {
 
         classLabels = new String[] {"no-recurrence-events", "recurrence-events"};
 
-        train(trainingSet, labels);
+        // Probability data from training data
+        Probabilities prob = train(trainingSet, featureLabels, classLabels, featureValueMap);
+
+        //Display probabilities
+        System.out.println("\nClass probabilities: ");
+        for (String classification : classLabels) {
+            System.out.println(classification + " = " + prob.classProb.get(classification));
+        }
+
+        System.out.println("\nConditional Probabilities:");
+        for (int i = 1; i < featureLabels.length; i++) {    // Skip i=0 as that was the class
+            String feature = featureLabels[i];
+            System.out.println(feature + ":");
+            for (String value : featureValueMap.get(feature)) {
+                System.out.print("\t" + value + ":");
+                for (String classification : classLabels) {
+                    CountKeys probKey = new CountKeys(feature, value, classification);
+                    double valueProb = prob.valueProb.get(probKey);
+                    System.out.print(" \t" + classification + " = " + valueProb);
+                }
+                System.out.println();   // newline
+            }
+        }
     }
 
-    private void train(List<List<String>> trainingSet, String[] featureLabels) {
-        Map<String, Integer> classLabelCount = new HashMap<>();
+    private Probabilities train(List<List<String>> trainingSet, String[] featureLabels, String[] classLabels,
+                                Map<String, List<String>> featureValueMap) {
+        Map<String, Integer> classCount = new HashMap<>();
         Map<CountKeys, Integer> featureCount = new HashMap<>();
 
 
         // Initialise counts
         for (String classLabel : classLabels) {
-            classLabelCount.put(classLabel, 1);
+            classCount.put(classLabel, 1);
 
             for (Map.Entry<String, List<String>> featureEntry : featureValueMap.entrySet()) {
                 String feature = featureEntry.getKey();
@@ -77,15 +101,15 @@ public class NaiveBayes {
             }
         }
 
-        System.out.println("Initialise counts...");
+        System.out.println("\nInitialise counts...");
         System.out.println("Count size: " + featureCount.size());
 
 
         // Count the numbers of each classification and the feature values related to it
         for (List<String> instance : trainingSet) {
             String classification = instance.get(CLASS_INDEX);
-            int newClassCount = classLabelCount.get(classification) + 1;
-            classLabelCount.put(classification, newClassCount);
+            int newClassCount = classCount.get(classification) + 1;
+            classCount.put(classification, newClassCount);
 
             for (int i = 1; i < featureLabels.length; i++) { // Skip i=0 as that was the class
                 String feature = featureLabels[i];
@@ -101,11 +125,11 @@ public class NaiveBayes {
         int classTotal = 0;
         Map<CountKeys, Integer> featureTotals = new HashMap<>();    // Could have used a 2d array,
                                                                     // but thought this was easier for some reason.
-        for (Map.Entry<String, Integer> classEntry : classLabelCount.entrySet()) {
-            classTotal += classEntry.getValue();    // adding to the total of all the times this class occurred
-            String classification = classEntry.getKey();
-            for (int i = 1; i < featureLabels.length; i++) {
-                String feature = featureLabels[i];  // Skip i=0 as that was the class
+        for (String classification : classLabels) {
+            classTotal += classCount.get(classification);    // adding to the total of all the times this class occurred
+
+            for (int i = 1; i < featureLabels.length; i++) {    // Skip i=0 as that was the class
+                String feature = featureLabels[i];
                 CountKeys featureKey = new CountKeys(feature, classification);
                 featureTotals.put(featureKey, 0);   // Initialise count to zero
                 List<String> featureValues = featureValueMap.get(feature);
@@ -118,6 +142,25 @@ public class NaiveBayes {
         }
 
 
+        // Calculate the probabilities from all the counts
+        System.out.println("\nGenerating probabilities...");
+        Probabilities prob = new Probabilities(new HashMap<>(), new HashMap<>());
+        for (String classification : classLabels) {
+            double classProb = (double) classCount.get(classification) / classTotal;
+            prob.classProb.put(classification, classProb);
+            for (int i = 1; i < featureLabels.length; i++) {    // Skip i=0 as that was the class
+                String feature = featureLabels[i];
+                List<String> featureValues = featureValueMap.get(feature);
+                for (String value : featureValues) {
+                    CountKeys featureKeys = new CountKeys(feature, value, classification);
+                    CountKeys totalKey = new CountKeys(feature, classification);
+                    double valueProb = (double) featureCount.get(featureKeys) / featureTotals.get(totalKey);
+                    prob.valueProb.put(featureKeys, valueProb);
+                }
+            }
+        }
+
+        return prob;
     }
 
     private String[] readFirstLine(String fileName) throws IOException {
