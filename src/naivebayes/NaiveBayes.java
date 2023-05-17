@@ -59,7 +59,7 @@ public class NaiveBayes {
         train(trainingSet, labels);
     }
 
-    private void train(List<List<String>> trainingSet, String[] labels) {
+    private void train(List<List<String>> trainingSet, String[] featureLabels) {
         Map<String, Integer> classLabelCount = new HashMap<>();
         Map<CountKeys, Integer> featureCount = new HashMap<>();
 
@@ -87,8 +87,8 @@ public class NaiveBayes {
             int newClassCount = classLabelCount.get(classification) + 1;
             classLabelCount.put(classification, newClassCount);
 
-            for (int i = 1; i < instance.size(); i++) { // Skip i=0 as that was the class
-                String feature = labels[i];
+            for (int i = 1; i < featureLabels.length; i++) { // Skip i=0 as that was the class
+                String feature = featureLabels[i];
                 String value = instance.get(i);
                 CountKeys keys = new CountKeys(feature, value, classification);
                 int newCount = featureCount.get(keys) + 1;
@@ -96,6 +96,26 @@ public class NaiveBayes {
             }
         }
 
+
+        // Calculate the totals
+        int classTotal = 0;
+        Map<CountKeys, Integer> featureTotals = new HashMap<>();    // Could have used a 2d array,
+                                                                    // but thought this was easier for some reason.
+        for (Map.Entry<String, Integer> classEntry : classLabelCount.entrySet()) {
+            classTotal += classEntry.getValue();    // adding to the total of all the times this class occurred
+            String classification = classEntry.getKey();
+            for (int i = 1; i < featureLabels.length; i++) {
+                String feature = featureLabels[i];  // Skip i=0 as that was the class
+                CountKeys featureKey = new CountKeys(feature, classification);
+                featureTotals.put(featureKey, 0);   // Initialise count to zero
+                List<String> featureValues = featureValueMap.get(feature);
+                for (String value : featureValues)  {
+                    CountKeys valueKeys = new CountKeys(feature, value, classification);
+                    int newCount = featureTotals.get(featureKey) + featureCount.get(valueKeys);
+                    featureTotals.put(featureKey, newCount);
+                }
+            }
+        }
 
 
     }
@@ -144,8 +164,20 @@ public class NaiveBayes {
             this.classification = classification;
         }
 
+        public CountKeys(String feature, String classification) {
+            this.feature = feature;
+            this.classification = classification;
+            value = null;
+        }
+
         @Override
         public String toString() {
+            if (value == null) {
+                return "{" +
+                        "feature='" + feature + '\'' +
+                        ", classification='" + classification + '\'' +
+                        '}';
+            }
             return "{" +
                     "feature='" + feature + '\'' +
                     ", value='" + value + '\'' +
@@ -157,12 +189,19 @@ public class NaiveBayes {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            CountKeys that = (CountKeys) o;
-            return feature.equals(that.feature) && value.equals(that.value) && classification.equals(that.classification);
+            CountKeys countKeys = (CountKeys) o;
+            if (value == null) {
+                if (countKeys.value != null) return false;
+                return feature.equals(countKeys.feature) && classification.equals(countKeys.classification);
+            }
+            return feature.equals(countKeys.feature) && value.equals(countKeys.value) && classification.equals(countKeys.classification);
         }
 
         @Override
         public int hashCode() {
+            if (value == null) {
+                return Objects.hash(feature, classification);
+            }
             return Objects.hash(feature, value, classification);
         }
     }
