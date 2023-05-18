@@ -63,7 +63,7 @@ public class NaiveBayes {
         //Display probabilities
         System.out.println("\nClass probabilities: ");
         for (String classification : classLabels) {
-            System.out.println(classification + " = " + prob.classProb.get(classification));
+            System.out.println("P(class = " + classification + ") = " + prob.classProb.get(classification));
         }
 
         System.out.println("\nConditional Probabilities:");

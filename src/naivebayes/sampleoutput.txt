@@ -1,0 +1,120 @@
+Loading files...
+Done!
+There are 267 training instances and 10 test instances.
+
+Initialise counts...
+Count size: 102
+
+Generating probabilities...
+
+Class probabilities:
+P(class = no-recurrence-events) = 0.7063197026022305
+P(class = recurrence-events) = 0.2936802973977695
+
+Conditional Probabilities:
+age:
+        10-19:  no-recurrence-events = 0.005050505050505051     recurrence-events = 0.011494252873563218
+        20-29:  no-recurrence-events = 0.010101010101010102     recurrence-events = 0.011494252873563218
+        30-39:  no-recurrence-events = 0.1111111111111111       recurrence-events = 0.1839080459770115
+        40-49:  no-recurrence-events = 0.31313131313131315      recurrence-events = 0.3103448275862069
+        50-59:  no-recurrence-events = 0.3282828282828283       recurrence-events = 0.25287356321839083
+        60-69:  no-recurrence-events = 0.1919191919191919       recurrence-events = 0.19540229885057472
+        70-79:  no-recurrence-events = 0.030303030303030304     recurrence-events = 0.011494252873563218
+        80-89:  no-recurrence-events = 0.005050505050505051     recurrence-events = 0.011494252873563218
+        90-99:  no-recurrence-events = 0.005050505050505051     recurrence-events = 0.011494252873563218
+menopause:
+        lt40:   no-recurrence-events = 0.03125  recurrence-events = 0.012345679012345678
+        ge40:   no-recurrence-events = 0.4583333333333333       recurrence-events = 0.38271604938271603
+        premeno:        no-recurrence-events = 0.5104166666666666       recurrence-events = 0.6049382716049383
+tumor-size:
+        0-4:    no-recurrence-events = 0.03980099502487562      recurrence-events = 0.022222222222222223
+        5-9:    no-recurrence-events = 0.024875621890547265     recurrence-events = 0.011111111111111112
+        10-14:  no-recurrence-events = 0.12935323383084577      recurrence-events = 0.022222222222222223
+        15-19:  no-recurrence-events = 0.11442786069651742      recurrence-events = 0.07777777777777778
+        20-24:  no-recurrence-events = 0.17412935323383086      recurrence-events = 0.15555555555555556
+        25-29:  no-recurrence-events = 0.15920398009950248      recurrence-events = 0.2111111111111111
+        30-34:  no-recurrence-events = 0.1691542288557214       recurrence-events = 0.25555555555555554
+        35-39:  no-recurrence-events = 0.05970149253731343      recurrence-events = 0.08888888888888889
+        40-44:  no-recurrence-events = 0.0845771144278607       recurrence-events = 0.07777777777777778
+        45-49:  no-recurrence-events = 0.014925373134328358     recurrence-events = 0.022222222222222223
+        50-54:  no-recurrence-events = 0.024875621890547265     recurrence-events = 0.044444444444444446
+        55-59:  no-recurrence-events = 0.004975124378109453     recurrence-events = 0.011111111111111112
+inv-nodes:
+        0-2:    no-recurrence-events = 0.7970297029702971       recurrence-events = 0.4725274725274725
+        3-5:    no-recurrence-events = 0.08415841584158416      recurrence-events = 0.17582417582417584
+        6-8:    no-recurrence-events = 0.039603960396039604     recurrence-events = 0.12087912087912088
+        9-11:   no-recurrence-events = 0.01485148514851485      recurrence-events = 0.06593406593406594
+        12-14:  no-recurrence-events = 0.009900990099009901     recurrence-events = 0.03296703296703297
+        15-17:  no-recurrence-events = 0.019801980198019802     recurrence-events = 0.04395604395604396
+        18-20:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.01098901098901099
+        21-23:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.01098901098901099
+        24-26:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.02197802197802198
+        27-29:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.01098901098901099
+        30-32:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.01098901098901099
+        33-35:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.01098901098901099
+        36-39:  no-recurrence-events = 0.0049504950495049506    recurrence-events = 0.01098901098901099
+node-caps:
+        yes:    no-recurrence-events = 0.1256544502617801       recurrence-events = 0.4
+        no:     no-recurrence-events = 0.8743455497382199       recurrence-events = 0.6
+deg-malig:
+        1:      no-recurrence-events = 0.2916666666666667       recurrence-events = 0.1111111111111111
+        2:      no-recurrence-events = 0.5104166666666666       recurrence-events = 0.35802469135802467
+        3:      no-recurrence-events = 0.19791666666666666      recurrence-events = 0.5308641975308642
+breast:
+        left:   no-recurrence-events = 0.5078534031413613       recurrence-events = 0.55
+        right:  no-recurrence-events = 0.49214659685863876      recurrence-events = 0.45
+breast-quad:
+        left_up:        no-recurrence-events = 0.34536082474226804      recurrence-events = 0.30120481927710846
+        left_low:       no-recurrence-events = 0.36597938144329895      recurrence-events = 0.3855421686746988
+        right_up:       no-recurrence-events = 0.10824742268041238      recurrence-events = 0.1686746987951807
+        right_low:      no-recurrence-events = 0.09278350515463918      recurrence-events = 0.08433734939759036
+        central:        no-recurrence-events = 0.08762886597938144      recurrence-events = 0.060240963855421686
+irradiat:
+        yes:    no-recurrence-events = 0.15706806282722513      recurrence-events = 0.3875
+        no:     no-recurrence-events = 0.8429319371727748       recurrence-events = 0.6125
+
+
+Using test instances to make predictions...
+
+instance 1:
+ - score(Y = no-recurrence-events) = 4.017731924138001E-6
+ - score(Y = recurrence-events) = 7.096642912782161E-6
+ - prediction: recurrence-events
+instance 2:
+ - score(Y = no-recurrence-events) = 3.3365875538186835E-4
+ - score(Y = recurrence-events) = 2.6021024013534593E-5
+ - prediction: no-recurrence-events
+instance 3:
+ - score(Y = no-recurrence-events) = 4.707378797592419E-5
+ - score(Y = recurrence-events) = 9.715041077797865E-7
+ - prediction: no-recurrence-events
+instance 4:
+ - score(Y = no-recurrence-events) = 1.5163354504655905E-4
+ - score(Y = recurrence-events) = 1.0219165794406317E-5
+ - prediction: no-recurrence-events
+instance 5:
+ - score(Y = no-recurrence-events) = 4.34523614378287E-6
+ - score(Y = recurrence-events) = 1.9205993914751727E-6
+ - prediction: no-recurrence-events
+instance 6:
+ - score(Y = no-recurrence-events) = 6.000123072810078E-4
+ - score(Y = recurrence-events) = 3.880403296274196E-5
+ - prediction: no-recurrence-events
+instance 7:
+ - score(Y = no-recurrence-events) = 2.071279390811688E-4
+ - score(Y = recurrence-events) = 7.415569159796725E-5
+ - prediction: no-recurrence-events
+instance 8:
+ - score(Y = no-recurrence-events) = 3.1504865826699285E-4
+ - score(Y = recurrence-events) = 8.934762413310772E-6
+ - prediction: no-recurrence-events
+instance 9:
+ - score(Y = no-recurrence-events) = 3.9123945169671666E-5
+ - score(Y = recurrence-events) = 6.483884504037111E-5
+ - prediction: recurrence-events
+instance 10:
+ - score(Y = no-recurrence-events) = 4.1017039290784815E-5
+ - score(Y = recurrence-events) = 5.283165151437645E-5
+ - prediction: recurrence-events
+
+Accuracy: 80.0%
